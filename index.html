@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maa Kaali Jewellers – Bhavnagar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --wine: #1f040a;
+  --wine-surface: #2d0a13;
+  --wine-card: #3a0d18;
+  --gold-start: #fceabb;
+  --gold-mid: #f3d58a;
+  --gold-end: #c08d3a;
+  --gold-accent: #e5b869;
+  --gold-glow: rgba(229, 184, 105, 0.25);
+  --ink: #fff8f0;
+  --mut: #d1b8a5;
+  --red: #8b1828;
+  --red-glow: rgba(139, 24, 40, 0.4);
+  --r: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--wine);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(90, 15, 30, 0.4) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(139, 24, 40, 0.25) 0%, transparent 50%);
+}
+
+h1, h2, h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+}
+
+.gold-text {
+  background: linear-gradient(135deg, var(--gold-start) 0%, var(--gold-mid) 50%, var(--gold-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+button, input, select, textarea { font: inherit; }
+
+/* Buttons */
+.btn {
+  position: relative;
+  background: linear-gradient(135deg, var(--gold-start), var(--gold-end));
+  color: #21040a;
+  border: none;
+  padding: 0.75rem 1.8rem;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px var(--gold-glow);
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: 0.5s;
+}
+.btn:hover::before { left: 100%; }
+.btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 28px rgba(229, 184, 105, 0.4);
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--gold-mid);
+  border: 1px solid var(--gold-accent);
+  box-shadow: none;
+}
+.btn.ghost:hover {
+  background: rgba(229, 184, 105, 0.1);
+  color: #fff;
+}
+.btn.sm { padding: 0.35rem 0.9rem; font-size: 0.85rem; }
+.btn.red {
+  background: linear-gradient(135deg, #b82236, #7a101f);
+  color: #fff;
+  box-shadow: 0 4px 15px var(--red-glow);
+}
+
+/* Inputs */
+input, select, textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(229, 184, 105, 0.3);
+  background: rgba(20, 3, 7, 0.6);
+  color: var(--ink);
+  margin: 0.3rem 0 0.8rem;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--gold-mid);
+  box-shadow: 0 0 15px var(--gold-glow);
+  background: rgba(30, 5, 12, 0.8);
+}
+
+/* Navigation */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 1rem 6vw;
+  background: rgba(31, 4, 10, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(229, 184, 105, 0.15);
+  transition: all 0.3s;
+}
+nav .logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  background: linear-gradient(135deg, #fff 0%, var(--gold-mid) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-right: auto;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+nav .links { display: flex; gap: 2rem; align-items: center; }
+nav a {
+  color: var(--mut);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+  position: relative;
+}
+nav a:hover { color: var(--gold-mid); }
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 2px;
+  background: var(--gold-mid);
+  transition: width 0.3s;
+}
+nav a:hover::after { width: 100%; }
+
+/* Hero Section */
+.hero-wrapper {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+#particles-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.hero {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 4rem 6vw;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+  gap: 3rem;
+}
+.hero-content h1 {
+  font-size: clamp(3rem, 6vw, 5.2rem);
+  line-height: 1.08;
+  margin-bottom: 1.2rem;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-content p {
+  color: var(--mut);
+  font-size: 1.15rem;
+  max-width: 44ch;
+  margin-bottom: 2rem;
+  font-weight: 300;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
+}
+.hero-content .actions {
+  display: flex; gap: 1rem;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards;
+}
+
+/* 3D Stage Animated Rings */
+.stage {
+  perspective: 1000px;
+  height: 420px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+.ring-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+.ring {
+  position: absolute;
+  width: 70px; height: 70px;
+  transform-style: preserve-3d;
+  animation: spin 18s linear infinite;
+}
+.ring i {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff, var(--gold-mid) 50%, var(--gold-end));
+  transform: rotateY(calc(var(--n) * 20deg)) translateZ(170px);
+  box-shadow: 0 0 20px var(--gold-glow);
+}
+.ring.b {
+  animation: spin2 24s linear infinite;
+}
+.ring.b i {
+  transform: rotateY(calc(var(--n) * 30deg)) translateZ(110px);
+  width: 45px; height: 45px;
+  background: radial-gradient(circle at 30% 30%, #ff8a9e, var(--red) 60%, var(--wine));
+  box-shadow: 0 0 20px var(--red-glow);
+}
+
+@keyframes spin {
+  from { transform: rotateX(-20deg) rotateY(0deg); }
+  to { transform: rotateX(-20deg) rotateY(360deg); }
+}
+@keyframes spin2 {
+  from { transform: rotateX(65deg) rotateZ(0deg); }
+  to { transform: rotateX(65deg) rotateZ(-360deg); }
+}
+
+/* Feature Cards */
+.feat {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  padding: 0 6vw 3rem;
+  position: relative;
+  z-index: 2;
+}
+.feat-card {
+  background: rgba(45, 10, 19, 0.5);
+  border: 1px solid rgba(229, 184, 105, 0.2);
+  padding: 1.5rem;
+  border-radius: var(--r);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  transition: all 0.4s ease;
+}
+.feat-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold-mid);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px var(--gold-glow);
+  background: rgba(58, 13, 24, 0.7);
+}
+.feat-icon {
+  font-size: 2.2rem;
+  background: rgba(229, 184, 105, 0.1);
+  width: 55px; height: 55px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(229, 184, 105, 0.2);
+}
+.feat-card b { font-size: 1.1rem; color: #fff; display: block; }
+.feat-card small { color: var(--mut); font-weight: 400; font-size: 0.85rem; }
+
+/* Slider Section */
+.slider-container {
+  padding: 2rem 6vw;
+}
+.slider {
+  position: relative;
+  height: 420px;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(229, 184, 105, 0.25);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+}
+.sl {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 3rem 5rem;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  pointer-events: none;
+}
+.sl.on {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+.sl h2 { font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 0.8rem; }
+.sl p { color: var(--mut); font-size: 1.1rem; margin-bottom: 1.5rem; }
+.sl-graphic {
+  display: flex; justify-content: center; align-items: center;
+}
+.sl svg {
+  width: 85%;
+  max-height: 320px;
+  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-16px) rotate(2deg); }
+}
+
+.sd {
+  position: absolute;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 10px;
+  z-index: 10;
+}
+.sd button {
+  width: 10px; height: 10px;
+  border-radius: 99px; border: none;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.4s;
+}
+.sd button.on {
+  width: 35px;
+  background: var(--gold-mid);
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+.sa {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(229, 184, 105, 0.4);
+  background: rgba(31, 4, 10, 0.6);
+  backdrop-filter: blur(8px);
+  color: var(--gold-mid);
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s;
+  display: flex; align-items: center; justify-content: center;
+}
+.sa:hover { background: var(--gold-mid); color: var(--wine); }
+
+/* Main Section Styling */
+section { padding: 5rem 6vw; }
+.section-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 3rem;
+}
+.section-header h2 { font-size: 3rem; margin-bottom: 0.5rem; }
+.section-header p { color: var(--mut); }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+.tabs button {
+  background: rgba(45, 10, 19, 0.6);
+  color: var(--ink);
+  border: 1px solid rgba(229, 184, 105, 0.25);
+  border-radius: 99px;
+  padding: 0.5rem 1.4rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tabs button:hover { border-color: var(--gold-mid); color: var(--gold-mid); }
+.tabs button.on {
+  background: linear-gradient(135deg, var(--gold-start), var(--gold-end));
+  color: var(--wine);
+  font-weight: 700;
+  border-color: transparent;
+  box-shadow: 0 4px 15px var(--gold-glow);
+}
+
+/* Card Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 2rem;
+  perspective: 1000px;
+}
+.card {
+  background: linear-gradient(160deg, rgba(58, 13, 24, 0.8) 0%, rgba(29, 4, 10, 0.9) 100%);
+  border: 1px solid rgba(229, 184, 105, 0.2);
+  border-radius: var(--r);
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+  transform-style: preserve-3d;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.card:hover {
+  transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--gold-glow);
+  border-color: var(--gold-mid);
+}
+.card-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #140307;
+}
+.card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.card:hover img { transform: scale(1.08); }
+.card .b { padding: 1.4rem; flex-grow: 1; display: flex; flex-direction: column; }
+.card h3 { font-size: 1.5rem; margin-bottom: 0.3rem; color: #fff; }
+.card p { font-size: 0.9rem; color: var(--mut); margin-top: 0.2rem; }
+.pr {
+  margin: 0.6rem 0;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--gold-mid);
+}
+.pr s {
+  color: rgba(209, 184, 165, 0.5);
+  font-weight: 400;
+  font-size: 0.95rem;
+  margin-left: 0.5rem;
+}
+.off {
+  position: absolute;
+  top: 12px; left: 12px;
+  background: linear-gradient(135deg, #d32f2f, #8b0000);
+  color: #fff;
+  padding: 0.2rem 0.7rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.heart {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(31, 4, 10, 0.6);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.3s;
+  display: flex; align-items: center; justify-content: center;
+}
+.heart:hover { transform: scale(1.1); background: rgba(31, 4, 10, 0.9); }
+.heart.on { color: #ff4757; border-color: #ff4757; animation: pop 0.4s ease; }
+
+@keyframes pop {
+  50% { transform: scale(1.3); }
+}
+
+/* Contact Section */
+.contact-container {
+  background: linear-gradient(135deg, rgba(45, 10, 19, 0.8), rgba(20, 3, 7, 0.9));
+  border: 1px solid rgba(229, 184, 105, 0.2);
+  border-radius: 28px;
+  padding: 3.5rem;
+  backdrop-filter: blur(10px);
+}
+.contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+}
+.contact-info h2 { font-size: 2.8rem; margin-bottom: 1rem; }
+.contact-info p { margin-bottom: 1.5rem; font-size: 1.05rem; }
+.addr {
+  color: var(--gold-mid);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.addr:hover { color: #fff; text-decoration: underline; }
+
+/* Drawer Wishlist */
+#fab {
+  position: fixed;
+  right: 25px; bottom: 25px;
+  z-index: 90;
+  border-radius: 50%;
+  width: 65px; height: 65px;
+  font-size: 1.6rem;
+  padding: 0;
+}
+#fab b {
+  position: absolute;
+  top: -2px; right: -2px;
+  background: #ff4757;
+  color: #fff;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.5rem;
+  border: 2px solid var(--wine);
+}
+.drawer {
+  position: fixed;
+  top: 0; right: 0;
+  height: 100%;
+  width: min(440px, 100%);
+  background: rgba(25, 4, 9, 0.96);
+  backdrop-filter: blur(20px);
+  z-index: 1000;
+  padding: 2rem;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: 1px solid rgba(229, 184, 105, 0.3);
+  box-shadow: -10px 0 40px rgba(0,0,0,0.8);
+}
+.drawer.open { transform: translateX(0); }
+.wi {
+  display: flex; gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  background: rgba(45, 10, 19, 0.6);
+  padding: 0.8rem;
+  border-radius: 14px;
+  border: 1px solid rgba(229, 184, 105, 0.15);
+}
+.wi img { width: 65px; height: 65px; border-radius: 10px; object-fit: cover; }
+.wi div { flex: 1; }
+
+.toast {
+  position: fixed;
+  left: 50%; bottom: 30px;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--gold-start), var(--gold-end));
+  color: var(--wine);
+  padding: 0.8rem 1.8rem;
+  border-radius: 99px;
+  z-index: 2000;
+  font-weight: 700;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translate(-50%, 20px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--mut);
+  border-top: 1px solid rgba(229, 184, 105, 0.15);
+  background: rgba(15, 2, 5, 0.8);
+  font-size: 0.95rem;
+}
+
+/* Admin Dashboard Styles */
+#admin { display: none; min-height: 100vh; background: #120205; }
+.alogin {
+  max-width: 380px;
+  margin: 15vh auto;
+  padding: 2.5rem;
+  background: var(--wine-surface);
+  border-radius: var(--r);
+  border: 1px solid var(--gold-accent);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+}
+.ashell { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+.side {
+  background: rgba(20, 3, 7, 0.95);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-right: 1px solid rgba(229, 184, 105, 0.15);
+}
+.side button {
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--ink);
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.side button.on, .side button:hover {
+  background: var(--gold-mid);
+  color: var(--wine);
+  font-weight: 700;
+}
+.main { padding: 2rem; overflow-y: auto; }
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+.kpi {
+  background: var(--wine-surface);
+  border-radius: var(--r);
+  padding: 1.2rem;
+  border-left: 4px solid var(--gold-mid);
+  border: 1px solid rgba(229, 184, 105, 0.15);
+}
+.kpi b {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 2.2rem;
+  display: block;
+  color: var(--gold-mid);
+}
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+.charts div {
+  background: var(--wine-surface);
+  border-radius: var(--r);
+  padding: 1.2rem;
+  border: 1px solid rgba(229, 184, 105, 0.15);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--wine-surface);
+  border-radius: var(--r);
+  overflow: hidden;
+  font-size: 0.92rem;
+}
+th, td { padding: 0.8rem 1rem; text-align: left; border-bottom: 1px solid rgba(229, 184, 105, 0.1); }
+th { color: var(--gold-mid); font-weight: 600; }
+.tw { overflow-x: auto; }
+.form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0 1.2rem;
+  background: var(--wine-surface);
+  padding: 1.5rem;
+  border-radius: var(--r);
+  margin-bottom: 2rem;
+  border: 1px solid rgba(229, 184, 105, 0.15);
+}
+.tag {
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+.tag.Delivered { background: #1b5e20; color: #a5d6a7; }
+.tag.Cancelled { background: #b71c1c; color: #ef9a9a; }
+.tag.Pending { background: #f57f17; color: #ffe082; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; text-align: center; }
+  .hero-content p { margin: 0 auto 2rem; }
+  .hero-content .actions { justify-content: center; }
+  .contact { grid-template-columns: 1fr; gap: 2rem; }
+  .sl { grid-template-columns: 1fr; padding: 2rem; text-align: center; }
+  .sl svg { max-height: 180px; }
+  .slider { height: 460px; }
+  .ashell { grid-template-columns: 1fr; }
+  .side { flex-direction: row; overflow-x: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="site">
+  <nav>
+    <a href="#" class="logo">Maa Kaali Jewellers</a>
+    <div class="links">
+      <a href="#shop">💍 Collection</a>
+      <a href="#contact">📍 Contact</a>
+    </div>
+  </nav>
+
+  <div class="hero-wrapper">
+    <canvas id="particles-canvas"></canvas>
+    <header class="hero">
+      <div class="hero-content">
+        <h1 class="gold-text">Crafted Elegance, Born in Bhavnagar</h1>
+        <p>22C / 916 KDM hallmarked ornaments. Exquisite handcrafted sets, chains, and bangles by Yudhisthir &amp; Prasanta Bangali.</p>
+        <div class="actions">
+          <a class="btn" href="#shop">Explore Collection</a>
+          <a class="btn ghost" href="#contact">Visit Store</a>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="ring-container">
+          <div class="ring" id="r1"></div>
+          <div class="ring b" id="r2"></div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="feat">
+    <div class="feat-card">
+      <div class="feat-icon">🏅</div>
+      <div><b>22C / 916 KDM<small>Certified Hallmark Gold</small></b></div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">💍</div>
+      <div><b>Exclusive Designs<small>Modern &amp; Heritage Sets</small></b></div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🛠️</div>
+      <div><b>Artisanal Craft<small>Master Jewelry Artisans</small></b></div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📍</div>
+      <div><b>Bhavnagar Store<small>Chandradeep Complex</small></b></div>
+    </div>
+  </div>
+
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#fceabb"/>
+        <stop offset="50%" stop-color="#f3d58a"/>
+        <stop offset="100%" stop-color="#c08d3a"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="slider-container">
+    <div class="slider" id="slider">
+      <button class="sa" style="left:15px" onclick="go(-1)" aria-label="Previous">‹</button>
+      <button class="sa" style="right:15px" onclick="go(1)" aria-label="Next">›</button>
+      <div class="sd" id="sd"></div>
+    </div>
+  </div>
+
+  <section id="shop">
+    <div class="section-header">
+      <h2 class="gold-text">Our Signature Collections</h2>
+      <p>Discover meticulously crafted pieces tailored for your special moments.</p>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-container">
+      <div class="contact">
+        <div class="contact-info">
+          <h2 class="gold-text">Visit or Connect</h2>
+          <p>📍 <a class="addr" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Chandradeep+Complex+Shedipith+Bhavnagar+364001">211, 2nd floor, Chandradeep Complex,<br>Shedipith No Delo, Bhavnagar 364001</a></p>
+          <p>📞 Prasanta: <a class="addr" href="tel:9825819618">98258 19618</a> · <a class="addr" href="tel:9510822714">95108 22714</a><br>📞 Yudhisthir: <a class="addr" href="tel:9510822715">95108 22715</a></p>
+        </div>
+        <div>
+          <input id="cn" placeholder="Your Full Name">
+          <input id="cp" placeholder="Phone Number">
+          <textarea id="cm" rows="4" placeholder="How can we assist you?"></textarea>
+          <button class="btn" onclick="sendQuery()" style="width:100%">Send Message</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <a class="addr" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Chandradeep+Complex+Shedipith+Bhavnagar+364001">📍 211, 2nd Floor, Chandradeep Complex, Shedipith No Delo, Bhavnagar 364001 – Open in Google Maps</a><br>
+    <p style="margin-top:0.8rem;">© Maa Kaali Jewellers, Bhavnagar. All rights reserved.</p>
+  </footer>
+
+  <button class="btn" id="fab" onclick="drawer.classList.add('open')" aria-label="Wishlist">♥<b id="wc">0</b></button>
+
+  <aside class="drawer" id="drawer">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+      <h2 class="gold-text">Saved Wishlist</h2>
+      <button class="btn ghost sm" onclick="drawer.classList.remove('open')">Close</button>
+    </div>
+    <div id="wl"></div>
+    <div id="wt" class="pr" style="margin:1rem 0;"></div>
+    <input id="wn" placeholder="Your Full Name">
+    <input id="wp" placeholder="WhatsApp Phone Number">
+    <button class="btn" style="width:100%;margin-top:0.5rem" onclick="sendChoice()">Send Selection on WhatsApp</button>
+  </aside>
+</div>
+
+<div id="admin">
+  <div class="alogin" id="alogin">
+    <h2 class="gold-text" style="margin-bottom:1rem">Admin Portal</h2>
+    <input id="ae" placeholder="Admin ID" autocomplete="username">
+    <input id="ap" type="password" placeholder="Password">
+    <button class="btn" style="width:100%;margin-top:0.5rem" onclick="login()">Log In</button>
+    <p id="aerr" style="color:#ff8a8a;margin-top:0.8rem;font-size:0.9rem"></p>
+  </div>
+
+  <div class="ashell" id="ashell" style="display:none">
+    <div class="side">
+      <h3 style="color:var(--gold-mid);margin-bottom:1rem">Maa Kaali Admin</h3>
+      <button data-t="dash" class="on">Dashboard</button>
+      <button data-t="orders">Orders</button>
+      <button data-t="queries">Queries</button>
+      <button data-t="items">Jewellery</button>
+      <button data-t="emps">Employees</button>
+      <button onclick="logout()" style="margin-top:auto;background:rgba(255,0,0,0.1);color:#ff7675">Log Out</button>
+    </div>
+    <div class="main">
+      <div id="t-dash">
+        <div class="kpis" id="kpis"></div>
+        <div class="charts">
+          <div><canvas id="c1"></canvas></div>
+          <div><canvas id="c2"></canvas></div>
+          <div><canvas id="c3"></canvas></div>
+        </div>
+      </div>
+      <div id="t-orders" hidden>
+        <h2>Orders</h2>
+        <div class="tw"><table id="otb"></table></div>
+      </div>
+      <div id="t-queries" hidden>
+        <h2>Queries &amp; Contact</h2>
+        <div class="tw"><table id="qtb"></table></div>
+      </div>
+      <div id="t-items" hidden>
+        <h2>Jewellery Management</h2>
+        <div class="form">
+          <input type="hidden" id="iid">
+          <div><label>Name</label><input id="in"></div>
+          <div>
+            <label>Category</label>
+            <select id="ic">
+              <option>Bangles</option><option>Chains</option><option>Sets</option>
+              <option>Rings</option><option>Earrings</option><option>Pendants</option>
+              <option>Mangalsutra</option>
+            </select>
+          </div>
+          <div><label>Price (₹)</label><input id="ip" type="number"></div>
+          <div><label>Discount Price (₹)</label><input id="id" type="number"></div>
+          <div><label>Weight / Purity</label><input id="iw" placeholder="e.g. 22C 916, 12 g"></div>
+          <div style="grid-column:1/-1"><label>Description</label><textarea id="ids" rows="2"></textarea></div>
+          <div><label>Upload Photo</label><input id="if" type="file" accept="image/*"></div>
+          <div><label>Capture Photo</label><input id="icam" type="file" accept="image/*" capture="environment"></div>
+          <div><img id="prev" style="max-height:90px;border-radius:10px;display:none;margin-top:0.5rem"></div>
+          <div style="align-self:end;display:flex;gap:0.5rem">
+            <button class="btn" onclick="saveItem()">Save</button>
+            <button class="btn ghost" onclick="clearItem()">Clear</button>
+          </div>
+        </div>
+        <div class="tw"><table id="itb"></table></div>
+      </div>
+      <div id="t-emps" hidden>
+        <h2>Employee Management</h2>
+        <div class="form">
+          <input type="hidden" id="eid">
+          <div><label>Name</label><input id="en"></div>
+          <div><label>Role</label><input id="er"></div>
+          <div><label>Phone</label><input id="ep"></div>
+          <div><label>Monthly Salary (₹)</label><input id="es" type="number"></div>
+          <div><label>Salary Paid (₹)</label><input id="epd" type="number" value="0"></div>
+          <div><label>Advance Taken (₹)</label><input id="ea" type="number" value="0"></div>
+          <div style="align-self:end"><button class="btn" onclick="saveEmp()">Save Employee</button></div>
+        </div>
+        <div class="tw"><table id="etb"></table></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, setDoc, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyBP5uI-4TBafzvq27VgKshVuk8yT1lwkvw",
+  authDomain: "maa-kaali-jewellers.firebaseapp.com",
+  projectId: "maa-kaali-jewellers",
+  storageBucket: "maa-kaali-jewellers.firebasestorage.app",
+  messagingSenderId: "293015831776",
+  appId: "1:293015831776:web:82244a47f6e098dc643c85",
+  measurementId: "G-ZWX1DN54Q4"
+});
+
+const db = getFirestore(app), auth = getAuth(app), WA = "916356692475";
+const $ = s => document.getElementById(s);
+const inr = n => "₹" + Number(n || 0).toLocaleString("en-IN");
+const toast = t => {
+  const d = document.createElement("div");
+  d.className = "toast"; d.textContent = t;
+  document.body.append(d);
+  setTimeout(() => d.remove(), 2800);
+};
+const esc = s => String(s ?? "").replace(/[&<>'"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+let items = [], orders = [], queries = [], emps = [], cat = "All", wish = new Set(JSON.parse(localStorage.getItem("mkj-w") || "[]")), img = "";
+const isAdmin = location.search.includes("admin");
+
+/* Canvas Floating Particles Animation */
+(function setupParticles() {
+  const canvas = $("particles-canvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  let particles = [];
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  for (let i = 0; i < 45; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2 + 0.5,
+      d: Math.random() * 1.5 + 0.5,
+      o: Math.random() * 0.6 + 0.2
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#f3d58a";
+    particles.forEach(p => {
+      ctx.globalAlpha = p.o;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+      p.y -= p.d * 0.4;
+      if (p.y < 0) { p.y = canvas.height; p.x = Math.random() * canvas.width; }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* 3D Rings */
+$("r1").innerHTML = Array.from({ length: 18 }, (_, i) => `<i style="--n:${i}"></i>`).join("");
+$("r2").innerHTML = Array.from({ length: 12 }, (_, i) => `<i style="--n:${i}"></i>`).join("");
+
+/* Interactive Slider */
+const G = "url(#g)";
+const art = {
+  bangles: () => `<svg viewBox="0 0 400 300"><g fill="none" stroke="${G}" stroke-width="14"><circle cx="150" cy="150" r="95"/><circle cx="250" cy="150" r="95"/><circle cx="200" cy="150" r="95" stroke-dasharray="3 9" stroke-width="10"/></g></svg>`,
+  chain: () => {
+    let l = "";
+    for (let i = 0; i <= 22; i++) {
+      const x = 30 + i * 15.5, y = 50 + 150 * Math.sin(Math.PI * i / 22);
+      l += `<ellipse cx="${x}" cy="${y}" rx="14" ry="7" transform="rotate(${i % 2 ? 60 : -60} ${x} ${y})"/>`;
+    }
+    return `<svg viewBox="0 0 400 300"><g fill="none" stroke="${G}" stroke-width="4">${l}</g><circle cx="200" cy="215" r="16" fill="${G}"/></svg>`;
+  },
+  set: () => {
+    let b = "";
+    for (let i = 0; i <= 16; i++) {
+      const a = Math.PI * (0.1 + 0.8 * i / 16);
+      b += `<circle cx="${200 - Math.cos(a) * 130}" cy="${40 + Math.sin(a) * 150}" r="${i % 4 == 0 ? 9 : 5}" fill="${G}"/>`;
+    }
+    return `<svg viewBox="0 0 400 300">${b}<path d="M200 190 l-16 30 l16 30 l16 -30z" fill="${G}"/><circle cx="52" cy="230" r="10" fill="${G}"/><circle cx="52" cy="258" r="6" fill="${G}"/><circle cx="348" cy="230" r="10" fill="${G}"/><circle cx="348" cy="258" r="6" fill="${G}"/></svg>`;
+  },
+  ring: () => `<svg viewBox="0 0 400 300"><circle cx="200" cy="190" r="70" fill="none" stroke="${G}" stroke-width="16"/><polygon points="200,55 242,98 200,138 158,98" fill="#fff" opacity=".92"/><polygon points="200,55 242,98 200,138 158,98" fill="none" stroke="${G}" stroke-width="6"/></svg>`
+};
+
+const slides = [
+  ["Handcrafted Gold Bangles", "22C / 916 KDM gold bangles customized to your perfect fit.", "bangles", "#5c1323"],
+  ["Timeless Gold Chains", "From light daily wear to elaborate festive designs.", "chain", "#3e1248"],
+  ["Bridal & Heritage Sets", "Exquisite necklace sets designed for your special day.", "set", "#6b1e10"],
+  ["Artisanal Gold Rings", "Handcrafted precision rings tailored to perfection.", "ring", "#0e3a35"]
+];
+
+const sl = $("slider"); let si = 0, timer;
+slides.forEach((x, i) => {
+  const d = document.createElement("div");
+  d.className = "sl" + (i ? "" : " on");
+  d.style.background = `radial-gradient(circle at 75% 50%, ${x[3]}, #1f040a 80%)`;
+  d.innerHTML = `<div><h2 class="gold-text">${x[0]}</h2><p>${x[1]}</p><a class="btn" href="#shop">Explore Collection</a></div><div class="sl-graphic">${art[x[2]]()}</div>`;
+  sl.insertBefore(d, $("sd"));
+  const b = document.createElement("button");
+  b.setAttribute("aria-label", "Slide " + (i + 1));
+  b.onclick = () => show(i);
+  $("sd").append(b);
+});
+
+function show(n) {
+  const a = sl.querySelectorAll(".sl"), d = $("sd").children;
+  si = (n + a.length) % a.length;
+  a.forEach((e, i) => e.classList.toggle("on", i === si));
+  [...d].forEach((e, i) => e.classList.toggle("on", i === si));
+  clearInterval(timer);
+  timer = setInterval(() => show(si + 1), 5000);
+}
+window.go = d => show(si + d); show(0);
+sl.onmouseenter = () => clearInterval(timer);
+sl.onmouseleave = () => show(si);
+
+/* Customer & Shop Features */
+const price = i => Number(i.discount) || Number(i.price) || 0;
+
+function renderShop() {
+  const cats = ["All", ...new Set(items.map(i => i.category))];
+  $("tabs").innerHTML = cats.map(c => `<button class="${c === cat ? "on" : ""}" data-c="${c}">${({ All: "✨", Bangles: "⭕", Chains: "⛓️", Sets: "👑", Rings: "💍", Earrings: "💎", Pendants: "🔱", Mangalsutra: "📿" })[c] || "✨"} ${c}</button>`).join("");
+  const list = items.filter(i => cat === "All" || i.category === cat);
+  
+  $("grid").innerHTML = list.length ? list.map(i => {
+    const off = i.price && i.discount ? Math.round(100 - i.discount / i.price * 100) : 0;
+    return `<article class="card" data-id="${i.id}">
+      <div class="card-img-wrap">
+        <img src="${i.image}" alt="${esc(i.name)}" loading="lazy">
+        ${off > 0 ? `<span class="off">${off}% OFF</span>` : ""}
+        <button class="heart ${wish.has(i.id) ? "on" : ""}" data-h="${i.id}" aria-label="Add to wishlist">♥</button>
+      </div>
+      <div class="b">
+        <h3>${esc(i.name)}</h3>
+        <div class="pr">${inr(price(i))}${i.discount && i.price ? `<s>${inr(i.price)}</s>` : ""}</div>
+        <p>${esc(i.description)}</p>
+        <p style="color:var(--gold-mid);font-size:0.85rem;margin-top:auto;padding-top:0.5rem">${esc(i.weight)}</p>
+      </div>
+    </article>`;
+  }).join("") : `<p style="grid-column:1/-1;text-align:center;color:var(--mut);padding:3rem">New designs are coming soon. Call us directly to inspect the latest stock.</p>`;
+  
+  renderWish();
+}
+
+function renderWish() {
+  const w = items.filter(i => wish.has(i.id));
+  $("wc").textContent = w.length;
+  $("wl").innerHTML = w.length ? w.map(i => `<div class="wi"><img src="${i.image}" alt=""><div><b>${esc(i.name)}</b><br><span style="color:var(--gold-mid)">${inr(price(i))}</span></div><button class="btn ghost sm" data-h="${i.id}">Remove</button></div>`).join("") : `<p style="text-align:center;color:var(--mut);padding:2rem 0">Tap ♥ on any piece to save it to your wishlist.</p>`;
+  $("wt").textContent = w.length ? "Total: " + inr(w.reduce((a, i) => a + price(i), 0)) : "";
+}
+
+document.addEventListener("click", e => {
+  const c = e.target.dataset.c, h = e.target.dataset.h;
+  if (c) { cat = c; renderShop(); }
+  if (h) {
+    wish.has(h) ? wish.delete(h) : wish.add(h);
+    localStorage.setItem("mkj-w", JSON.stringify([...wish]));
+    renderShop();
+  }
+});
+
+/* Dynamic Card Tilt Effect */
+document.addEventListener("mousemove", e => {
+  const k = e.target.closest?.(".card");
+  if (!k) return;
+  const r = k.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+  k.style.transform = `rotateY(${x * 12}deg) rotateX(${-y * 12}deg) translateY(-6px)`;
+});
+document.addEventListener("mouseout", e => {
+  const k = e.target.closest?.(".card");
+  if (k) k.style.transform = "";
+});
+
+window.sendQuery = async () => {
+  if (!$("cn").value || !$("cm").value) return toast("Please enter your name and message.");
+  await addDoc(collection(db, "queries"), { name: $("cn").value, phone: $("cp").value, message: $("cm").value, createdAt: serverTimestamp() });
+  $("cn").value = $("cp").value = $("cm").value = "";
+  toast("Message sent! We will contact you shortly.");
+};
+
+window.sendChoice = async () => {
+  const w = items.filter(i => wish.has(i.id));
+  if (!w.length) return toast("Your wishlist is empty.");
+  if (!$("wn").value || !$("wp").value) return toast("Please enter your name and phone number.");
+  const total = w.reduce((a, i) => a + price(i), 0);
+  await addDoc(collection(db, "orders"), { name: $("wn").value, phone: $("wp").value, items: w.map(i => ({ id: i.id, name: i.name, category: i.category, price: price(i) })), total, status: "Pending", createdAt: serverTimestamp() });
+  const msg = `Hello Maa Kaali Jewellers,\nI am ${$("wn").value} (${$("wp").value}). I am interested in:\n` + w.map((i, n) => `${n + 1}. ${i.name} (${i.category}) - ${inr(price(i))}`).join("\n") + `\nTotal: ${inr(total)}`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
+  wish.clear(); localStorage.setItem("mkj-w", "[]");
+  renderShop(); $("drawer").classList.remove("open");
+};
+
+onSnapshot(collection(db, "jewellery"), s => {
+  items = s.docs.map(d => ({ id: d.id, ...d.data() }));
+  renderShop();
+  if (isAdmin) adminRender();
+});
+
+/* Admin Functionality */
+if (isAdmin) {
+  $("site").style.display = "none";
+  $("admin").style.display = "block";
+
+  window.login = () => signInWithEmailAndPassword(auth, $("ae").value.includes("@") ? $("ae").value.trim() : $("ae").value.trim().toLowerCase() + "@maakaali.com", $("ap").value).catch(() => $("aerr").textContent = "Invalid credentials");
+  window.logout = () => signOut(auth);
+
+  document.querySelectorAll(".side button[data-t]").forEach(b => b.onclick = () => {
+    document.querySelectorAll(".side button").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    ["dash", "orders", "queries", "items", "emps"].forEach(t => $("t-" + t).hidden = t !== b.dataset.t);
+  });
+
+  onAuthStateChanged(auth, u => {
+    $("alogin").style.display = u ? "none" : "block";
+    $("ashell").style.display = u ? "grid" : "none";
+    if (u) startAdmin();
+  });
+
+  let started = false;
+  function startAdmin() {
+    if (started) return; started = true;
+    onSnapshot(query(collection(db, "orders"), orderBy("createdAt", "desc")), s => { orders = s.docs.map(d => ({ id: d.id, ...d.data() })); adminRender(); });
+    onSnapshot(query(collection(db, "queries"), orderBy("createdAt", "desc")), s => { queries = s.docs.map(d => ({ id: d.id, ...d.data() })); adminRender(); });
+    onSnapshot(collection(db, "employees"), s => { emps = s.docs.map(d => ({ id: d.id, ...d.data() })); adminRender(); });
+  }
+
+  const dt = x => x?.toDate ? x.toDate().toLocaleString("en-IN") : "";
+  const pend = e => Math.max(0, (+e.salary || 0) - (+e.paid || 0) - (+e.advance || 0));
+  let charts = {};
+
+  const chart = (id, type, labels, data, label) => {
+    charts[id]?.destroy();
+    charts[id] = new Chart($(id), {
+      type,
+      data: { labels, datasets: [{ label, data, backgroundColor: ["#e5b869", "#2e7d32", "#c62828", "#7b1fa2", "#1565c0", "#ef6c00", "#00838f"] }] },
+      options: { plugins: { legend: { labels: { color: "#fff8f0" } } }, scales: type === "doughnut" ? {} : { x: { ticks: { color: "#d1b8a5" } }, y: { ticks: { color: "#d1b8a5" } } } }
+    });
+  };
+
+  function adminRender() {
+    if (!started) return;
+    const st = s => orders.filter(o => o.status === s).length, rev = orders.filter(o => o.status === "Delivered").reduce((a, o) => a + (o.total || 0), 0);
+    $("kpis").innerHTML = [["Orders", orders.length], ["Pending", st("Pending")], ["Delivered", st("Delivered")], ["Cancelled", st("Cancelled")], ["Revenue", inr(rev)], ["Queries", queries.length], ["Items", items.length], ["Salary Pending", inr(emps.reduce((a, e) => a + pend(e), 0))]].map(k => `<div class="kpi"><b>${k[1]}</b>${k[0]}</div>`).join("");
+    chart("c1", "doughnut", ["Pending", "Delivered", "Cancelled"], [st("Pending"), st("Delivered"), st("Cancelled")], "Orders Status");
+    const cs = [...new Set(items.map(i => i.category))]; chart("c2", "bar", cs, cs.map(c => items.filter(i => i.category === c).length), "Designs / Category");
+    chart("c3", "bar", emps.map(e => e.name), emps.map(pend), "Salary Pending (₹)");
+
+    $("otb").innerHTML = `<tr><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th></tr>` + orders.map(o => `<tr><td>${dt(o.createdAt)}</td><td>${esc(o.name)}<br>${esc(o.phone)}</td><td>${(o.items || []).map(i => esc(i.name)).join(", ")}</td><td>${inr(o.total)}</td><td><span class="tag ${o.status}">${o.status}</span><br><select data-o="${o.id}">${["Pending", "Delivered", "Cancelled"].map(s => `<option ${s === o.status ? "selected" : ""}>${s}</option>`).join("")}</select></td></tr>`).join("");
+    $("qtb").innerHTML = `<tr><th>Date</th><th>Name</th><th>Phone</th><th>Message</th><th>Action</th></tr>` + queries.map(q => `<tr><td>${dt(q.createdAt)}</td><td>${esc(q.name)}</td><td><a style="color:var(--gold-mid)" href="tel:${esc(q.phone)}">${esc(q.phone)}</a></td><td>${esc(q.message)}</td><td><button class="btn red sm" data-dq="${q.id}">Delete</button></td></tr>`).join("");
+    $("itb").innerHTML = `<tr><th>Photo</th><th>Name</th><th>Category</th><th>Price</th><th>Offer</th><th>Action</th></tr>` + items.map(i => `<tr><td><img src="${i.image}" width="45" height="45" style="border-radius:8px;object-fit:cover"></td><td>${esc(i.name)}</td><td>${i.category}</td><td>${inr(i.price)}</td><td>${inr(i.discount)}</td><td><button class="btn sm" data-ei="${i.id}">Edit</button> <button class="btn red sm" data-di="${i.id}">Delete</button></td></tr>`).join("");
+    $("etb").innerHTML = `<tr><th>Name</th><th>Salary</th><th>Paid</th><th>Advance</th><th>Pending</th><th>Action</th></tr>` + emps.map(e => `<tr><td>${esc(e.name)}<br><small>${esc(e.role)} ${esc(e.phone)}</small></td><td>${inr(e.salary)}</td><td>${inr(e.paid)}</td><td>${inr(e.advance)}</td><td><b>${inr(pend(e))}</b></td><td><button class="btn sm" data-pay="${e.id}">Pay</button> <button class="btn ghost sm" data-adv="${e.id}">Advance</button> <button class="btn sm" data-ee="${e.id}">Edit</button> <button class="btn red sm" data-de="${e.id}">Delete</button></td></tr>`).join("");
+  }
+  window.adminRender = adminRender;
+
+  document.addEventListener("change", e => { if (e.target.dataset.o) updateDoc(doc(db, "orders", e.target.dataset.o), { status: e.target.value }).then(() => toast("Status updated")); });
+
+  const shrink = f => new Promise(r => {
+    const fr = new FileReader();
+    fr.onload = () => {
+      const im = new Image();
+      im.onload = () => {
+        const k = Math.min(1, 720 / Math.max(im.width, im.height)), c = document.createElement("canvas");
+        c.width = im.width * k; c.height = im.height * k;
+        c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+        r(c.toDataURL("image/jpeg", 0.75));
+      };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(f);
+  });
+
+  for (const id of ["if", "icam"]) $(id).onchange = async e => { if (e.target.files[0]) { img = await shrink(e.target.files[0]); $("prev").src = img; $("prev").style.display = "block"; } };
+
+  window.clearItem = () => { ["iid", "in", "ip", "id", "iw", "ids", "if", "icam"].forEach(x => $(x).value = ""); img = ""; $("prev").style.display = "none"; };
+
+  window.saveItem = async () => {
+    if (!$("in").value || !$("ip").value) return toast("Name and Price are required.");
+    const id = $("iid").value, data = { name: $("in").value, category: $("ic").value, price: +$("ip").value, discount: +$("id").value || 0, weight: $("iw").value, description: $("ids").value };
+    if (img) data.image = img; else if (!id) return toast("Please upload or take a photo.");
+    id ? await updateDoc(doc(db, "jewellery", id), data) : await addDoc(collection(db, "jewellery"), { ...data, createdAt: serverTimestamp() });
+    clearItem(); toast("Item saved successfully.");
+  };
+
+  window.saveEmp = async () => {
+    if (!$("en").value) return toast("Employee name required.");
+    const id = $("eid").value, d = { name: $("en").value, role: $("er").value, phone: $("ep").value, salary: +$("es").value || 0, paid: +$("epd").value || 0, advance: +$("ea").value || 0 };
+    id ? await updateDoc(doc(db, "employees", id), d) : await addDoc(collection(db, "employees"), d);
+    ["eid", "en", "er", "ep", "es"].forEach(x => $(x).value = ""); $("epd").value = $("ea").value = 0;
+    toast("Employee record saved.");
+  };
+
+  document.addEventListener("click", async e => {
+    const d = e.target.dataset;
+    if (d.ei) { const i = items.find(x => x.id === d.ei); $("iid").value = i.id; $("in").value = i.name; $("ic").value = i.category; $("ip").value = i.price; $("id").value = i.discount; $("iw").value = i.weight || ""; $("ids").value = i.description || ""; $("prev").src = i.image; $("prev").style.display = "block"; scrollTo(0, 0); }
+    if (d.di && confirm("Delete this item?")) deleteDoc(doc(db, "jewellery", d.di));
+    if (d.dq && confirm("Delete this query?")) deleteDoc(doc(db, "queries", d.dq));
+    if (d.de && confirm("Delete employee?")) deleteDoc(doc(db, "employees", d.de));
+    if (d.ee) { const x = emps.find(y => y.id === d.ee); $("eid").value = x.id; $("en").value = x.name; $("er").value = x.role || ""; $("ep").value = x.phone || ""; $("es").value = x.salary; $("epd").value = x.paid; $("ea").value = x.advance; scrollTo(0, 0); }
+    if (d.pay) { const a = +prompt("Salary paid (₹)"); if (a > 0) { const x = emps.find(y => y.id === d.pay); updateDoc(doc(db, "employees", x.id), { paid: (+x.paid || 0) + a }); } }
+    if (d.adv) { const a = +prompt("Advance given (₹)"); if (a > 0) { const x = emps.find(y => y.id === d.adv); updateDoc(doc(db, "employees", x.id), { advance: (+x.advance || 0) + a }); } }
+  });
+} else window.adminRender = () => {};
+</script>
+</body>
+</html>
